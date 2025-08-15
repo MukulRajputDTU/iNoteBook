@@ -99,70 +99,75 @@ export default function Home() {
       </div>
 
       {/* Features */}
-      <div className="container py-3">
+      <div className="container py-5">
         <div className="row text-center mb-5">
+          {/* Easy Organization */}
           <div className="col-md-4">
             <div className="card h-100 shadow-sm border-0">
               <div className="card-body">
                 <i className="bi bi-folder2-open fs-1 text-primary"></i>
-                <h5 className="card-title mt-3">Easy Organization</h5>
+                <h5 className="card-title mt-3">Effortless Organization</h5>
                 <p className="card-text text-muted">
-                  Categorize your notes with tags and folders to keep everything
-                  tidy and accessible.
+                  Stay in control of your notes with intuitive tagging, custom
+                  folders, and drag-and-drop simplicity.
                 </p>
                 <ul className="list-unstyled text-muted">
-                  <li>✔️ Custom folders</li>
-                  <li>✔️ Tag management</li>
-                  <li>✔️ Drag & drop support</li>
+                  <li>✔️ Customizable folders</li>
+                  <li>✔️ Smart tag management</li>
+                  <li>✔️ Easy drag & drop</li>
                 </ul>
               </div>
             </div>
           </div>
 
+          {/* Cloud Sync */}
           <div className="col-md-4">
             <div className="card h-100 shadow-sm border-0">
               <div className="card-body">
                 <i className="bi bi-cloud-arrow-up fs-1 text-primary"></i>
-                <h5 className="card-title mt-3">Cloud Sync</h5>
+                <h5 className="card-title mt-3">Seamless Cloud Sync</h5>
                 <p className="card-text text-muted">
-                  Access your notes anytime, anywhere with seamless automatic
-                  syncing.
+                  Your notes go with you. Enjoy real-time syncing and offline
+                  access across all your devices.
                 </p>
                 <ul className="list-unstyled text-muted">
-                  <li>✔️ Real-time sync</li>
-                  <li>✔️ Cross-device access</li>
-                  <li>✔️ Offline mode</li>
+                  <li>✔️ Real-time updates</li>
+                  <li>✔️ Access on any device</li>
+                  <li>✔️ Works offline too</li>
                 </ul>
               </div>
             </div>
           </div>
 
+          {/* Security */}
           <div className="col-md-4">
             <div className="card h-100 shadow-sm border-0">
               <div className="card-body">
                 <i className="bi bi-shield-lock fs-1 text-primary"></i>
-                <h5 className="card-title mt-3">Secure & Private</h5>
+                <h5 className="card-title mt-3">Built-In Security</h5>
                 <p className="card-text text-muted">
-                  Your notes are encrypted and protected with top-grade security
-                  measures.
+                  Your privacy is our priority. All your content is secured with
+                  powerful encryption and biometric protection.
                 </p>
                 <ul className="list-unstyled text-muted">
                   <li>✔️ End-to-end encryption</li>
-                  <li>✔️ Biometric login</li>
-                  <li>✔️ Backup & restore</li>
+                  <li>✔️ Biometric authentication</li>
+                  <li>✔️ Reliable backup & restore</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="text-center py-4 bg-light rounded shadow-sm">
-          <h2 className="fw-bold">Start writing smarter today</h2>
+        {/* CTA Section */}
+        <div className="text-center py-5 bg-light rounded shadow-sm">
+          <h2 className="fw-bold">Start Writing Smarter</h2>
           <p className="text-muted">
-            No credit card required. Join for free and stay organized forever.
+            Organize your thoughts effortlessly. Join now for free—no credit
+            card needed.
           </p>
           <a href="/login" className="btn btn-outline-primary btn-lg mt-2">
-            Login
+            Get Started
           </a>
         </div>
       </div>

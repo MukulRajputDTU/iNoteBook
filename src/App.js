@@ -10,6 +10,7 @@ import Logout from "./components/Logout";
 import Contact from "./components/Contact";
 import Privacy from "./components/Privacy";
 import Terms from "./components/Terms";
+import Dashboard from "./components/Dashboard";
 // import Alert from "./components/Alert";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path="/logout" element={<Logout />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
           </div>
         </Router>

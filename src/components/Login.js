@@ -1,10 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer, toast, Bounce } from "react-toastify";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.fromSignup) {
+      toast.success("Account created successfully!");
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate, location.pathname]);
+
+  const notify = (message, type) => {
+    if (type === "warn") {
+      toast.warn(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else if (type === "error") {
+      toast.error(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else if (type === "success") {
+      toast.success(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    } else {
+      toast.default(message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +88,9 @@ export default function Login() {
 
       if (json.success) {
         localStorage.setItem("token", json.authtoken);
-        navigate("/");
+        navigate('/dashboard', { state: { log: true } });
       } else {
-        alert("Invalid credentials");
+        notify("Invalid credentials","error");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -54,7 +116,9 @@ export default function Login() {
         <h2 className="mb-4 text-center">Login to Notes</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -70,7 +134,9 @@ export default function Login() {
             </div>
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="form-label">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -88,13 +154,23 @@ export default function Login() {
         </form>
         <p className="text-center mt-3">
           Don't have an account?{" "}
-          <Link
-            to="/signup"
-            style={{ textDecoration: "underline" }}
-          >
+          <Link to="/signup" style={{ textDecoration: "underline" }}>
             Sign Up
           </Link>
         </p>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme="colored"
+          transition={Bounce}
+        />
       </motion.div>
     </div>
   );
