@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Dash = () => {
-  const host = "http://localhost:5000";
+  const host = process.env.REACT_APP_URL;
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Dash = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await fetch(`${host}/api/auth/getuser`, {
+        const response = await fetch(`${host}api/auth/getuser`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const Dash = () => {
     };
 
     getUser();
-  }, []);
+  }, [host]);
 
   const avatarUrl = user
     ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`

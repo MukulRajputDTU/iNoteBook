@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast, Bounce } from "react-toastify";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function SignUp() {
-  const [credentials, setCredentials] = useState({
-    name: "",
-    email: "",
-    password: "",
-    cpassword: "",
-  });
+const url = process.env.REACT_APP_URL;
+
+export default function Login() {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.fromSignup) {
+      toast.success("Account created successfully!");
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   const notify = (message, type) => {
     if (type === "warn") {
@@ -27,8 +31,7 @@ export default function SignUp() {
         theme: "colored",
         transition: Bounce,
       });
-    }
-    else if (type === "error") {
+    } else if (type === "error") {
       toast.error(message, {
         position: "top-center",
         autoClose: 5000,
@@ -40,8 +43,7 @@ export default function SignUp() {
         theme: "colored",
         transition: Bounce,
       });
-    }
-    else if (type === "success") {
+    } else if (type === "success") {
       toast.success(message, {
         position: "top-center",
         autoClose: 5000,
@@ -53,8 +55,7 @@ export default function SignUp() {
         theme: "colored",
         transition: Bounce,
       });
-    }
-    else {
+    } else {
       toast.default(message, {
         position: "top-center",
         autoClose: 5000,
@@ -69,55 +70,42 @@ export default function SignUp() {
     }
   };
 
-  const validateEmail = (email) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateEmail(credentials.email)) {
-      notify("Invalid Email", "error");
-      return;
-    }
-    if (credentials.password.length < 5) {
-      notify("Password must be 5 characters long.", "error");
-      return;
-    }
-    if (credentials.password !== credentials.cpassword) {
-      notify("Passwords do not match", "warn");
-      return;
-    }
-    const response = await fetch("http://localhost:5000/api/auth/createuser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: credentials.name,
-        email: credentials.email,
-        password: credentials.password,
-      }),
-    });
 
-    const json = await response.json();
-    console.log(json);
+    try {
+      const response = await fetch(`${url}api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
 
-    if (json.success) {
-      navigate('/login', { state: { fromSignup: true } });
-    } else {
-      notify("User already exists!","error");
+      const json = await response.json();
+
+      if (json.success) {
+        localStorage.setItem("token", json.authtoken);
+        navigate('/dashboard', { state: { log: true } });
+      } else {
+        notify("Invalid credentials","error");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
   };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
-  
+
   return (
     <div
       className="container d-flex justify-content-center align-items-center"
-      style={{ minHeight: "80vh", marginTop: "30px" }}
+      style={{ minHeight: "80vh" }}
     >
       <motion.div
         className="shadow rounded-4 p-5 bg-white w-100"
@@ -126,67 +114,49 @@ export default function SignUp() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h2 className="mb-4 text-center">Create Your Account</h2>
+        <h2 className="mb-4 text-center">Login to Notes</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label>Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              onChange={onChange}
-              placeholder="Your Name"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label>Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
-              className="form-control"
               id="email"
               name="email"
+              value={credentials.email}
               onChange={onChange}
+              className="form-control"
               placeholder="Enter email"
               required
             />
+            <div id="emailHelp" className="form-text">
+              We'll never share your email with anyone else.
+            </div>
           </div>
-          <div className="mb-3">
-            <label>Password</label>
+          <div className="mb-4">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <input
               type="password"
-              className="form-control"
               id="password"
               name="password"
+              value={credentials.password}
               onChange={onChange}
+              className="form-control"
               placeholder="Password"
               required
             />
           </div>
-          <div className="mb-3">
-            <label>Confirm Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="cpassword"
-              name="cpassword"
-              onChange={onChange}
-              placeholder="Confirm Password"
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-success w-100">
-            Sign Up
+          <button type="submit" className="btn btn-primary w-100">
+            Login
           </button>
         </form>
         <p className="text-center mt-3">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            style={{ cursor: "pointer", textDecoration: "underline" }}
-          >
-            Login
+          Don't have an account?{" "}
+          <Link to="/signup" style={{ textDecoration: "underline" }}>
+            Sign Up
           </Link>
         </p>
         <ToastContainer

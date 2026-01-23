@@ -4,13 +4,13 @@ const dotenv = require("dotenv");
 var app = express();
 
 dotenv.config();
-const port = 5000;
 const connectToMongo = require("./db");
 connectToMongo();
 
 app.use(cors());
 app.use(express.json());
 
+const port = process.env.PORT;
 app.use('/api/auth',require('./routes/auth'));
 app.use('/api/notes',require('./routes/notes'));
 

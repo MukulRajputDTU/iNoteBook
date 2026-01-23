@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fetchUser = require("../middleware/fetchUser");
 
-const JWT_SECRET = "HELLOWORLD";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Create a user using: POST "/api/auth". Doesn't require authentication
 router.post('/createUser', [
@@ -24,7 +24,7 @@ router.post('/createUser', [
         const email = req.body.email;
         let user = await User.findOne({ email });
         if (user) {
-            return res.status(400).json({ success, error: 'User already exists' });
+            return res.status(400).send({ success, error: 'User already exists' });
         }
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password,salt);
